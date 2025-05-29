@@ -1,29 +1,38 @@
 name: Deploy to EC2
-
+  
 on:
   push:
     branches:
       - main
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-      
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+        
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
           
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-          
-      - name: Deploy to EC2 and run container
-        run: |
-          ssh -i ~/.ssh/id_rsa -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          docker stop node-secret || true
-          docker rm node-secret || true
-          docker pull your-dockerhub-username/node-secret:latest || true
-          docker run -d --name node-secret --env SECRET_MESSAGE="This is the secret" --env USERNAME=admin --env PASSWORD=supersecret -p 3000:3000 your-dockerhub-username/node-secret:latest
-          EOF
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+              
+          - name: Set up SSH key
+            run: |
+              mkdir -p ~/.ssh
+              echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+              chmod 600 ~/.ssh/id_rsa
+              ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+              
+          - name: Deploy to EC2 and run container
+            env:
+              SECRET_MESSAGE: ${{ secrets.SECRET_MESSAGE }}
+              USERNAME: ${{ secrets.USERNAME }}
+              PASSWORD: ${{ secrets.PASSWORD }}
+              run: |
+                ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+                docker stop node-secret || true
+                docker rm node-secret || true
+                docker pull suchithrachandrasekaran/node-secret:latest || true
+                docker run -d --name node-secret \
+                --env SECRET_MESSAGE='${SECRET_MESSAGE}' \
+                --env USERNAME='${USERNAME}' \
+                --env PASSWORD='${PASSWORD}' \
+                -p 3000:3000 suchithrachandrasekaran/node-secret:latest
+                "
