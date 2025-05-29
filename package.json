@@ -1,0 +1,27 @@
+{
+	"name": "docker-nodejs-deploy",
+	"version": "1.0.0",
+    	"description": "This project demonstrates a secure, dockerized Node.js API deployed automatically to an AWS EC2 instance using GitHub Actions, with all secrets managed via environment variables and GitHub Secrets",
+  	"main": "server.js",
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/SuchithraChandrasekaran/docker-nodejs-deploy.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/SuchithraChandrasekaran/docker-nodejs-deploy/issues"
+	},
+	"homepage": "https://github.com/SuchithraChandrasekaran/docker-nodejs-deploy#readme",
+	"dependencies": {
+		"basic-auth": "^2.0.1",
+		"dotenv": "^16.5.0",
+		"express": "^5.1.0"
+	}
+}
+

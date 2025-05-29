@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const port = 80;
+const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => res.send('Hello, world, Dockerized Nodejs project (from EC2)'));
 
