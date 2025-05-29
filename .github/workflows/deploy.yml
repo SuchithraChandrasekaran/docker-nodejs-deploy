@@ -25,14 +25,14 @@ jobs:
           SECRET_MESSAGE: ${{ secrets.SECRET_MESSAGE }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          run: |
-            ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-            docker stop node-secret || true
-            docker rm node-secret || true
-            docker pull suchithrachandrasekaran/node-secret:latest || true
-            docker run -d --name node-secret \
-            --env SECRET_MESSAGE='${SECRET_MESSAGE}' \
-            --env USERNAME='${USERNAME}' \
-            --env PASSWORD='${PASSWORD}' \
-            -p 3000:3000 suchithrachandrasekaran/node-secret:latest
-            "
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -p ${{ secrets.EC2_PORT }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+          docker stop node-secret || true
+          docker rm node-secret || true
+          docker pull suchithrachandrasekaran/node-secret:latest || true
+          docker run -d --name node-secret \
+              --env SECRET_MESSAGE='${SECRET_MESSAGE}' \
+              --env USERNAME='${USERNAME}' \
+              --env PASSWORD='${PASSWORD}' \
+              -p 3000:3000 suchithrachandrasekaran/node-secret:latest
+          "
