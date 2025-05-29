@@ -31,23 +31,23 @@ cd docker-nodejs-deploy
 
 Create a .env file in the root directory:
 
-    USERNAME=admin
-    PASSWORD=secret123
-    SECRET_MESSAGE=This is a protected message!
+    USERNAME=<username>
+    PASSWORD=<password>
+    SECRET_MESSAGE=<Any secret message>
 
 ### Never commit your .env file
 
 ### 4. Run Locally
 
     npm start
-    Visit http://localhost ➝ should return Hello, world!
+    - Visit [http://localhost:3000/](http://localhost:3000/) for "Hello, world!"
 
-    Visit http://localhost/secret ➝ prompt for username & password
+    - Visit [http://localhost:3000/secret](http://localhost:3000/secret) and use Basic Auth credentials from `.env`
 
 ### 5. Build and Run with Docker
 
-    docker build -t secure-node-app .
-    docker run -p 80:80 --env-file .env secure-node-app
+    docker build -t docker-nodejs-deploy .
+   docker run --env-file .env -p 3000:3000 node-secret
 
 ### 6. Set Up Remote Server (AWS EC2)
 
